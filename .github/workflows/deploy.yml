@@ -1,26 +1,44 @@
-name: Entrega Continua - Preparación
+name: Entrega Continua - Despliegue
 
 on:
   push:
     branches:
-      - main  # Cuando se haga push a la rama 'main'
+      - main  # Este flujo se activará cada vez que empujes cambios a la rama 'main'
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # El trabajo de pruebas se ejecuta en una máquina Ubuntu
 
     steps:
     - name: Clonar el repositorio
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3  # Esta acción clona tu repositorio en la máquina del runner
 
     - name: Configurar Git
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
 
-    - name: Ejecutar pruebas
+    - name: Ejecutar pruebas (opcional)
       run: |
-        # Aquí puedes poner los comandos para tus pruebas si tienes alguna configuración de pruebas, como por ejemplo:
-        # npm test si tu proyecto usa Node.js y tiene pruebas configuradas
-        # Si no tienes pruebas automáticas, puedes omitir esta parte o agregar otras configuraciones como validaciones de código
-        echo "Pruebas automáticas completadas"
+        # Aquí puedes agregar cualquier comando para ejecutar pruebas automáticas si las tienes configuradas
+        echo "Pruebas automáticas completadas"  # Puedes reemplazar este comando por el que necesites
+
+  deploy:
+    runs-on: ubuntu-latest  # El trabajo de despliegue también se ejecutará en Ubuntu
+    needs: tests  # Este trabajo depende de que el trabajo de 'tests' haya terminado con éxito
+
+    steps:
+    - name: Clonar el repositorio
+      uses: actions/checkout@v3  # Clonamos el repositorio nuevamente
+
+    - name: Configurar Git
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+
+    - name: Desplegar en GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4  # Usamos una acción para desplegar en GitHub Pages
+      with:
+        branch: gh-pages  # Rama de GitHub Pages donde se desplegará el sitio
+        folder: ./  # Carpeta que contiene el sitio web (en este caso, toda la raíz del proyecto)
+        token: ${{ secrets.GITHUB_TOKEN }}  # Token de autenticación que GitHub maneja automáticamente
