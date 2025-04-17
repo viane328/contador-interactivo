@@ -14,14 +14,28 @@ jobs:
 
     steps:
     - name: Clonar el repositorio
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
+      id: checkout
+      continue-on-error: false  # Esto asegurará que si falla, no continue
+
+    - name: Verificar repositorio clonado
+      run: |
+        echo "Archivos del repositorio clonados:"
+        ls -la
 
     - name: Crear entorno de preproducción
       run: |
-        echo "Simulando preproducción... Se crea la versión para revisión"
+        echo "Creando entorno de preproducción..."
         mkdir -p preproduction
-        cp -r * preproduction/
+        cp -r * preproduction/ || { echo 'Error copiando archivos a preproducción'; exit 1; }
         echo "✅ Preproducción lista para revisión."
+
+    - name: Subir artefacto (versión construida)
+      uses: actions/upload-artifact@v2
+      with:
+        name: preproduction-version
+        path: preproduction/
 
     - name: Verificación completada
       run: echo "✅ El entorno de preproducción está listo. No se ha desplegado a producción."
+
