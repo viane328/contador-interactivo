@@ -16,5 +16,5 @@ jobs:
     - name: Subir a GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .  # Publica desde la raíz donde está index.html
+        github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+        publish_dir: .
