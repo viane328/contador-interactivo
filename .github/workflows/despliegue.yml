@@ -14,12 +14,17 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout del código
+        uses: actions/checkout@v3
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v3
 
       - name: Subir archivos (preparar para deploy)
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
+          name: contador-artifact
           path: .  # Asegúrate que tu index.html está en la raíz
+
+      - name: Publicar en GitHub Pages
+        uses: actions/deploy-pages@v2
