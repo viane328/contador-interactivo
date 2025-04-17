@@ -1,44 +1,27 @@
-name: Entrega Continua - Despliegue
+name: Entrega Continua - Preproducción
 
 on:
   push:
     branches:
-      - main  # Este flujo se activará cada vez que empujes cambios a la rama 'main'
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest  # El trabajo de pruebas se ejecuta en una máquina Ubuntu
+  deploy-to-preproduction:
+    runs-on: ubuntu-latest
 
     steps:
     - name: Clonar el repositorio
-      uses: actions/checkout@v3  # Esta acción clona tu repositorio en la máquina del runner
+      uses: actions/checkout@v3
 
-    - name: Configurar Git
+    - name: Crear entorno de preproducción
       run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "github-actions@github.com"
+        echo "Simulando preproducción... Se crea la versión para revisión"
+        mkdir -p preproduction
+        cp -r * preproduction/
+        echo "✅ Preproducción lista para revisión."
 
-    - name: Ejecutar pruebas (opcional)
-      run: |
-        # Aquí puedes agregar cualquier comando para ejecutar pruebas automáticas si las tienes configuradas
-        echo "Pruebas automáticas completadas"  # Puedes reemplazar este comando por el que necesites
-
-  deploy:
-    runs-on: ubuntu-latest  # El trabajo de despliegue también se ejecutará en Ubuntu
-    needs: tests  # Este trabajo depende de que el trabajo de 'tests' haya terminado con éxito
-
-    steps:
-    - name: Clonar el repositorio
-      uses: actions/checkout@v3  # Clonamos el repositorio nuevamente
-
-    - name: Configurar Git
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "github-actions@github.com"
-
-    - name: Desplegar en GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4  # Usamos una acción para desplegar en GitHub Pages
-      with:
-        branch: gh-pages  # Rama de GitHub Pages donde se desplegará el sitio
-        folder: ./  # Carpeta que contiene el sitio web (en este caso, toda la raíz del proyecto)
-        token: ${{ secrets.GITHUB_TOKEN }}  # Token de autenticación que GitHub maneja automáticamente
+    - name: Verificación completada
+      run: echo "✅ El entorno de preproducción está listo. No se ha desplegado a producción."
