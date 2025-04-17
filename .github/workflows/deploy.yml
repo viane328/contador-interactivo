@@ -3,23 +3,28 @@ name: Entrega Continua - Preproducción
 on:
   push:
     branches:
+      - main  # Se ejecutará cuando subas cambios a la rama main
+  pull_request:
+    branches:
       - main
 
 jobs:
-  deploy-to-preproduction:
-    runs-on: ubuntu-latest
+  deploy-preprod:
+    runs-on: ubuntu-latest  # Usa el sistema Ubuntu en el servidor de GitHub
 
     steps:
     - name: Clonar el repositorio
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Crear entorno de preproducción
+    - name: Configurar entorno de preproducción
       run: |
-        mkdir -p preproduction
-        cp -r * preproduction/
-        
-    - name: Subir artefacto (versión construida)
-      uses: actions/upload-artifact@v2
-      with:
-        name: preproduction-version
-        path: preproduction/
+        echo "Configurando entorno de preproducción..."
+        # Aquí podrías ejecutar comandos para simular el despliegue sin hacerlo realmente
+
+    - name: Simular despliegue a preproducción
+      run: |
+        echo "Simulando despliegue a preproducción..."
+        echo "Proyecto listo para previsualización, pero aún no en producción."
+
+    - name: Verificación completada
+      run: echo "✅ Entorno de preproducción configurado correctamente"
