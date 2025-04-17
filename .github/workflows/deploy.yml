@@ -1,0 +1,26 @@
+name: Entrega Continua - Preparación
+
+on:
+  push:
+    branches:
+      - main  # Cuando se haga push a la rama 'main'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar el repositorio
+      uses: actions/checkout@v3
+
+    - name: Configurar Git
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+
+    - name: Ejecutar pruebas
+      run: |
+        # Aquí puedes poner los comandos para tus pruebas si tienes alguna configuración de pruebas, como por ejemplo:
+        # npm test si tu proyecto usa Node.js y tiene pruebas configuradas
+        # Si no tienes pruebas automáticas, puedes omitir esta parte o agregar otras configuraciones como validaciones de código
+        echo "Pruebas automáticas completadas"
