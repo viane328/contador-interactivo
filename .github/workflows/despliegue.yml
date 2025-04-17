@@ -1,0 +1,20 @@
+name: Deploy contador
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta cuando subes cambios a la rama principal
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Descargar el código
+      uses: actions/checkout@v3
+
+    - name: Subir a GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .  # Publica desde la raíz donde está index.html
