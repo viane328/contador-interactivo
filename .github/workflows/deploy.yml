@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   deploy-to-preproduction:
@@ -14,28 +11,15 @@ jobs:
 
     steps:
     - name: Clonar el repositorio
-      uses: actions/checkout@v1
-      id: checkout
-      continue-on-error: false  # Esto asegurará que si falla, no continue
-
-    - name: Verificar repositorio clonado
-      run: |
-        echo "Archivos del repositorio clonados:"
-        ls -la
+      uses: actions/checkout@v2
 
     - name: Crear entorno de preproducción
       run: |
-        echo "Creando entorno de preproducción..."
         mkdir -p preproduction
-        cp -r * preproduction/ || { echo 'Error copiando archivos a preproducción'; exit 1; }
-        echo "✅ Preproducción lista para revisión."
-
+        cp -r * preproduction/
+        
     - name: Subir artefacto (versión construida)
       uses: actions/upload-artifact@v2
       with:
         name: preproduction-version
         path: preproduction/
-
-    - name: Verificación completada
-      run: echo "✅ El entorno de preproducción está listo. No se ha desplegado a producción."
-
