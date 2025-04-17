@@ -1,20 +1,25 @@
-name: Deploy contador
+name: Entrega continua de contador
 
 on:
   push:
     branches:
-      - main  # Se ejecuta cuando subes cambios a la rama principal
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
 
     steps:
-    - name: Descargar el código
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Subir a GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.MY_GITHUB_TOKEN }}
-        publish_dir: .
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v3
+
+      - name: Subir archivos
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: .  # Donde está tu index.html
