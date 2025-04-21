@@ -1,27 +1,23 @@
-name: Entrega Continua - Preproducción
+name: Deploy Preproducción
 
 on:
   push:
     branches:
-      - main  # Se activa cuando subes algo a la rama principal
-  pull_request:
-    branches:
-      - main
+      - main  # o la rama que estés usando
 
 jobs:
-  deploy-preprod:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar el repositorio
+      - name: Clonar repositorio
         uses: actions/checkout@v3
 
       - name: Instalar Netlify CLI
         run: npm install -g netlify-cli
 
-      - name: Desplegar a preproducción en Netlify
+      - name: Desplegar a Netlify (preproducción)
         env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: |
-          netlify deploy --dir=./ --site=$NETLIFY_SITE_ID --auth=$DEPLOY_TOKEN --message="Deploy de preproducción" --json
+          NETLIFY_SITE_ID: tu-id-de-sitio-netlify
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: netlify deploy --dir=./ --site=$NETLIFY_SITE_ID --auth=$DEPLOY_TOKEN --message="Deploy de preproducción" --json
